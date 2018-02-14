@@ -67,11 +67,12 @@ export default {
 
   },
   methods: {
-    linkClickHandler (callback) {
+    linkClickHandler (index, callback) {
+      this.linkIndex = index
       this.addLink = callback
     },
     addLinkHandler () {
-      this.addLink('测试', 'xxx')
+      this.addLink(this.linkIndex, '测试', 'xxx')
     },
     setEditor1(editor) {
       this.editor1Content = 'Set Editor 1 Content'

@@ -154,15 +154,17 @@ export default {
     },
   
     emitLinkHandler($event) {
-      let callback = this.addLinkHandler
-      this.$emit('linkClick', callback)
-    },
-    
-    addLinkHandler(text, href, type = 'link') {
       let Editor = this.quill
       let range = Editor.getSelection();
       let cursorLocation = range.index
-      Editor.insertText(cursorLocation, text, type, href)
+      let callback = this.addLinkHandler
+      this.$emit('linkClick', cursorLocation, callback)
+    },
+    
+    addLinkHandler(index, text, href = '', type = 'link') {
+      if (typeof index === 'undefined') return false
+      if (!text) text = href;
+      this.quill.insertText(index, text, type, href)
     },
 
     handleUpdatedEditor() {
