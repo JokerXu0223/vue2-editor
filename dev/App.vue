@@ -8,12 +8,16 @@
           id="editor1"
           useCustomImageHandler
           @imageAdded="handleImageAdded"
+          @linkClick="linkClickHandler"
           :editorOptions="editorSettings"
+          :editorToolbar="customToolbar"
           v-model="editor1Content">
         </vue-editor>
         <button class="btn btn-primary" @click="saveContent(editor1Content)">Save</button>
+        <button class="btn btn-primary" @click="addLinkHandler">addLink</button>
 
-        <div v-html="content"></div>
+        <!--<div v-html="content"></div>-->
+        <div>{{editor1Content}}</div>
       </div>
     </div>
   </div>
@@ -37,7 +41,7 @@ export default {
   },
   data() {
     return {
-      editor1Content: '<div class="wrap hero__heading_wrap"> <h1 class="hero__heading">Imagine what you can accomplish.</h1> <h2 class="subheader__title" style="color:#c8c8c8;">Discover what matters.<br> And build your life around it.</h2> <div>Content Inside Div</div> <a href="/online-degrees/#undergraduate-section" class="orange-btn">Undergraduate Degrees</a> <a href="/online-degrees/#graduate-section" class="orange-btn">Graduate Degrees</a></div>',
+      editor1Content: '',
       editor2Content: '<h1>Editor 2 Starting Content</h1>',
       showPreview: true,
       content: '<div class="wrap hero__heading_wrap"> <h1 class="hero__heading">Imagine what you can accomplish.</h1> <h2 class="subheader__title" style="color:#c8c8c8;">Discover what matters.<br> And build your life around it.</h2> <div>Content Inside Div</div> <a href="/online-degrees/#undergraduate-section" class="orange-btn">Undergraduate Degrees</a> <a href="/online-degrees/#graduate-section" class="orange-btn">Graduate Degrees</a></div>',
@@ -54,12 +58,8 @@ export default {
       },
       customToolbar: [
         ['bold', 'italic', 'underline'],
-        [{
-          'list': 'ordered'
-        }, {
-          'list': 'bullet'
-        }],
-        ['image', 'code-block']
+        [{'list': 'ordered'}, { 'list': 'bullet' }],
+        ['image', 'link']
       ]
     }
   },
@@ -67,6 +67,12 @@ export default {
 
   },
   methods: {
+    linkClickHandler (callback) {
+      this.addLink = callback
+    },
+    addLinkHandler () {
+      this.addLink('测试', 'xxx')
+    },
     setEditor1(editor) {
       this.editor1Content = 'Set Editor 1 Content'
     },

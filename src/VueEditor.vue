@@ -83,6 +83,7 @@ export default {
       this.handleDynamicStyles()
       this.checkForInitialContent()
       this.checkForCustomImageHandler()
+      this.checkLinkHandler()
     },
 
     setQuillElement() {
@@ -145,6 +146,23 @@ export default {
     setupCustomImageHandler() {
       let toolbar = this.quill.getModule('toolbar');
       toolbar.addHandler('image', this.customImageHandler);
+    },
+  
+    checkLinkHandler() {
+      let toolbar = this.quill.getModule('toolbar');
+      toolbar.addHandler('link', this.emitLinkHandler);
+    },
+  
+    emitLinkHandler($event) {
+      let callback = this.addLinkHandler
+      this.$emit('linkClick', callback)
+    },
+    
+    addLinkHandler(text, href, type = 'link') {
+      let Editor = this.quill
+      let range = Editor.getSelection();
+      let cursorLocation = range.index
+      Editor.insertText(cursorLocation, text, type, href)
     },
 
     handleUpdatedEditor() {
