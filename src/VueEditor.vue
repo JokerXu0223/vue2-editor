@@ -1,7 +1,14 @@
 <template>
   <div class="quillWrapper">
     <div ref="quillContainer" :id="id"></div>
-    <input v-if="useCustomImageHandler" @change="emitImageInfo($event)" ref="fileInput" id="file-upload" type="file" style="display:none;">
+    <input v-if="useCustomImageHandler"
+           @change="emitImageInfo($event)"
+           ref="fileInput"
+           id="file-upload"
+           type="file" style="display:none;"
+           accept="image/png,image/jpeg,image/gif"
+           capture="camera"
+    >
   </div>
 </template>
 
@@ -147,12 +154,12 @@ export default {
       let toolbar = this.quill.getModule('toolbar');
       toolbar.addHandler('image', this.customImageHandler);
     },
-  
+
     checkLinkHandler() {
       let toolbar = this.quill.getModule('toolbar');
       toolbar.addHandler('link', this.emitLinkHandler);
     },
-  
+
     emitLinkHandler($event) {
       let Editor = this.quill
       let range = Editor.getSelection();
@@ -160,7 +167,7 @@ export default {
       let callback = this.addLinkHandler
       this.$emit('linkClick', cursorLocation, callback)
     },
-    
+
     addLinkHandler(index, text, href = '', type = 'link') {
       if (typeof index === 'undefined') return false
       if (!text) text = href;
@@ -182,7 +189,7 @@ export default {
         var uploader = document.getElementById('file-upload');
         uploader.value = '';
       }
-      
+
       let file = $event.target.files[0]
       let Editor = this.quill
       let range = Editor.getSelection();
