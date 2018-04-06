@@ -1,13 +1,20 @@
 <template>
   <div class="quillWrapper">
     <div ref="quillContainer" :id="id"></div>
-    <input v-if="useCustomImageHandler"
+    <input v-if="useCustomImageHandler && iswx"
            @change="emitImageInfo($event)"
            ref="fileInput"
-           id="file-upload"
+           class="file-upload"
            type="file" style="display:none;"
-           accept="image/png,image/jpeg,image/gif"
+           accept="image/*"
            capture="camera"
+    >
+    <input v-if="useCustomImageHandler && !iswx"
+           @change="emitImageInfo($event)"
+           ref="fileInput"
+           class="file-upload"
+           type="file" style="display:none;"
+           accept="image/*"
     >
   </div>
 </template>
@@ -42,6 +49,10 @@ export default {
       default: false
     },
   },
+  created () {
+    const agent = navigator.userAgent.toLowerCase()
+    this.iswx = agent.indexOf('qqbrowser') >= 0
+  },
 
   computed: {
     filteredInitialContent() {
@@ -56,6 +67,7 @@ export default {
 
   data() {
     return {
+      iswx: false,
       quill: null,
       editor: null,
       editorConfig: {},
@@ -186,7 +198,7 @@ export default {
 
     emitImageInfo($event) {
       const resetUploader = function() {
-        var uploader = document.getElementById('file-upload');
+        var uploader = document.getElementsByClassName('file-upload')[0];
         uploader.value = '';
       }
 
